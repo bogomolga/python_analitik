@@ -9,6 +9,7 @@ my_list = []
 while n:    
     my_list.append(n % 2)
     n>>=1
+my_list.reverse()
 print(" ".join(map(str, my_list)).replace(" ", ""))
     
 
