@@ -1,21 +1,58 @@
-# 1. Задайте список из нескольких чисел. Напишите программу, которая найдёт сумму элементов списка, стоящих на позиции с нечетным индексом.
+# 1. Задана натуральная степень k. 
+# Сформировать случайным образом список коэффициентов (значения от 0 до 100) многочлена и записать в файл многочлен степени k.
 # Пример:
-# [2, 3, 5, 9, 3] -> на нечётных позициях элементы 3 и 9, ответ: 12
-# [1, 2, 3, 4, 5, 6, 7, 8, 9] -> для нечетных 25
+# если k = 2, то многочлены могут быть => 2*x² + 4*x + 5 = 0 или x² + 5 = 0 или 10*x² = 0
 
-my_list = [1, 2, 3, 4, 5, 6, 7, 8, 9] 
 
-def sum_list(my_list: list, odd: bool): # odd=True = нечетные, False = четные
-    sum = 0
-    for i in range(len(my_list)):      
-        if odd and i%2 == 0: 
-            sum = sum + my_list[i]
-        elif not odd and i%2 != 0:
-            sum = sum + my_list[i]
-    if odd:        
-        print('Сумма нечетных элементов: ', sum)
+import random
+
+def write_to_file(s):
+    path = 'poly.txt'
+    data = open(path, 'a', encoding="utf8") # 'a' - append, закрывает файл автоматически
+    data.write(f"{s}\n")
+    #data.close()
+
+def ask_for_positiv_number(s):
+    num = int(input(s))
+    if num < 0:
+        return -1
     else:
-        print('Сумма четных элементов: ', sum)
+        return num
 
-sum_list(my_list, True) # Считаем сумму нечетных элементов
+def create_mnogochlen(k):
+    equation = {} # словарь
+    for i in range(k, -1, -1): # от k до 0 с шагом -1 (по убыванию)
+        equation[i] = random.randint(0,100) # для каждого ключа генерим рандомно значения
+    #print(equation)
+    eq_str = ''
+    for k,v in equation.items():
+        if k == 1:
+            eq_str += f'{v}*x + '
+        elif k == 0:
+            eq_str += f'{v} + '
+        else:
+            eq_str += f'{v}*x^{k} + '
+    else:
+        eq_str = eq_str[:-3]
+    eq_str += ' = 0'
+    print("многочлен: ", eq_str)
+    return eq_str
+
+for i in range(3):
+    k = ask_for_positiv_number('Введите максимальную степень > 0: ')
+    if k == -1:
+        print("Некорректные входные данные")
+        break
+    elif k == 0:
+        print("многочлен: 0 = 0")
+    else:
+        write_to_file(create_mnogochlen(k))
+
+
+
+
+
+    
+
+
 
